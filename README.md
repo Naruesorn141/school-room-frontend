@@ -43,6 +43,11 @@ VITE_API_URL=http://localhost:3000
 Back-end ตั้ง CORS สำหรับ `http://localhost:5173` ไว้แล้ว
 ถ้าเปลี่ยน origin ของเว็บ ต้องปรับค่า CORS ฝั่ง Back-end ให้ตรงกันด้วย
 
+ถ้า deploy Front-end บน Vercel ให้ตั้ง `VITE_API_URL` เป็น URL ของ Back-end
+เช่น `https://school-room-backend.vercel.app` โดยไม่ใส่ `/` ท้าย URL
+ตั้งค่า `FRONTEND_ORIGIN` ฝั่ง Back-end ให้ตรงกับ origin ของเว็บที่ deploy
+แล้ว redeploy ทั้งสองโปรเจกต์เพื่อให้ environment variables ใหม่มีผล
+
 ## วิธีใช้งาน
 
 1. ที่แท็บ **Students** ค้นหาด้วยรหัส ชื่อ หรือระดับชั้น แล้วเพิ่ม แก้ไข หรือลบนักเรียนได้
