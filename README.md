@@ -1,12 +1,74 @@
-# School Rooms frontend
+# School Room Frontend
 
-React 18, TypeScript, Vite, and Ant Design UI for students, classrooms, and classroom rosters. Requires Node 22.23.2 and npm.
+เว็บสำหรับจัดการนักเรียน ห้องเรียน และรายชื่อนักเรียนในห้อง
+พัฒนาด้วย React 18, TypeScript, Vite และ Ant Design โดยแยกเป็น repository ฝั่ง Front-end
 
-## Run
+## ความสามารถ
 
-1. Start the backend on `http://localhost:3000`.
-2. Run `npm install`.
-3. Copy `.env.example` to `.env` if you need to change `VITE_API_URL` (defaults to `http://localhost:3000`).
-4. Run `npm run dev` and open `http://localhost:5173`.
+- ค้นหา เพิ่ม แก้ไข และลบนักเรียน
+- ค้นหา เพิ่ม แก้ไข และลบห้องเรียน
+- ดูรายชื่อนักเรียนในห้อง เพิ่มนักเรียนเข้าห้อง และเอานักเรียนออก
+- แสดงห้องเดิมและขอคำยืนยันก่อนย้ายนักเรียนไปห้องอื่นในปีเดียวกัน
 
-Run `npm test` for focused UI tests and `npm run build` for the TypeScript and production build. The API must allow CORS from the frontend origin.
+การลบนักเรียนหรือห้องใช้ API ลบแบบซ่อน
+ระบบไม่แสดงหน้ากู้คืน เพราะอยู่นอกขอบเขตของโจทย์
+
+## สิ่งที่ต้องมี
+
+- Node.js 22.23.2 และ npm 10.9.8 เป็นเวอร์ชันที่ใช้ตรวจโปรเจกต์นี้
+- Back-end API ของโปรเจกต์นี้รันอยู่ที่ `http://localhost:3000`
+- Back-end เชื่อมต่อ MySQL ที่มีตารางตามโจทย์อยู่แล้ว
+
+## ติดตั้งและเริ่มใช้งาน
+
+เปิด Back-end ก่อน แล้วรันคำสั่งจากโฟลเดอร์ของ repository นี้:
+
+```bash
+npm ci
+npm run dev
+```
+
+เปิด `http://localhost:5173` ใน browser
+ค่า API เริ่มต้นคือ `http://localhost:3000` จึงไม่จำเป็นต้องสร้าง `.env` ถ้าใช้ค่านี้
+ถ้าต้องเปลี่ยน URL ให้คัดลอกไฟล์ตัวอย่างแล้วแก้ค่า:
+
+```bash
+cp .env.example .env
+```
+
+```dotenv
+VITE_API_URL=http://localhost:3000
+```
+
+Back-end ตั้ง CORS สำหรับ `http://localhost:5173` ไว้แล้ว
+ถ้าเปลี่ยน origin ของเว็บ ต้องปรับค่า CORS ฝั่ง Back-end ให้ตรงกันด้วย
+
+## วิธีใช้งาน
+
+1. ที่แท็บ **Students** ค้นหาด้วยรหัส ชื่อ หรือระดับชั้น แล้วเพิ่ม แก้ไข หรือลบนักเรียนได้
+2. ที่แท็บ **Classrooms** ค้นหาด้วยเลขห้อง ชื่อห้อง หรือชื่อครู แล้วจัดการห้องเรียนได้
+3. กดดูรายชื่อของห้องเพื่อเพิ่มหรือเอานักเรียนออก
+4. ถ้านักเรียนอยู่ห้องอื่นในปีเดียวกัน ระบบแสดงห้องเดิมและ modal ยืนยันการย้าย
+
+การเพิ่มนักเรียนเข้าห้องต้องมีระดับชั้นตรงกัน
+Back-end เป็นผู้ตรวจเงื่อนไขนี้และกติกาหนึ่งห้องต่อคนต่อปี
+
+## โครงสร้างสำคัญ
+
+- `src/main.tsx` เริ่ม render React
+- `src/App.tsx` แสดงแท็บ ตาราง ฟอร์ม และ modal จัดห้อง
+- `src/api.ts` กำหนดชนิดข้อมูลและเรียก REST API ด้วย `fetch`
+- `src/style.css` กำหนดรูปแบบหน้าจอ
+- `src/App.test.tsx` ทดสอบการใช้งานหน้าเว็บ
+- `src/test/setup.ts` เตรียม browser API จำลองสำหรับ test
+
+## ทดสอบและ build
+
+```bash
+npm test
+npm run build
+```
+
+UI test ใช้ Vitest, React Testing Library และ jsdom
+โดยจำลอง `fetch` จึงไม่ต้องเปิด Back-end หรือ MySQL ระหว่างรัน test
+`npm run build` ตรวจ TypeScript และสร้างไฟล์สำหรับใช้งานจริงใน `dist/`
